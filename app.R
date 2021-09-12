@@ -10,9 +10,6 @@ library(dplyr)
 ref_df = read.csv("./ref_df.csv")
 
 # intensity_cols = colorRampPalette(c("black","orange","red"))
-source("intro.R")
-
-
 
 # div(
 #   class="spinner-border", role="status",
