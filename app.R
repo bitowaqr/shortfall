@@ -263,12 +263,12 @@ ui <- fillPage(
               
               # ACTIONS ---------
               div(
-                class = "shadow border rounded-3  py-3 bg-white res-card flex-fill me-1 mb-3 px-3 py-5 d-flex justify-content-center",
-                downloadButton("download", "download", icon = icon("download"),class = "btn-info-2 shiny-download-link"),
-                actionButton("info", "info",icon = icon("info-circle"), class = "btn-info-2", "data-bs-toggle"="modal", "data-bs-target"="#infoModal"),
-                actionButton("sources", "sources", icon = icon("book"), class = "btn-info-2", "data-bs-toggle"="modal", "data-bs-target"="#sourcesModal"),
-                actionButton("code", "code", icon = icon("code"), class = "btn-info-2"),
-                actionButton("contact", "contact", icon = icon("envelope"),class = "btn-info-2 "),
+                class = "shadow border rounded-3  py-3 bg-white res-card flex-fill me-1 mb-3 px-3 py-4 d-flex justify-content-center flex-wrap",
+                downloadButton("download", "download", icon = icon("download"),class = "btn-info-2 my-2"),
+                actionButton("info", "info",icon = icon("info-circle"), class = "btn-info-2 my-2", "data-bs-toggle"="modal", "data-bs-target"="#infoModal"),
+                actionButton("sources", "sources", icon = icon("book"), class = "btn-info-2 my-2", "data-bs-toggle"="modal", "data-bs-target"="#sourcesModal"),
+                actionButton("code", "code", icon = icon("code"), class = "btn-info-2 my-2"),
+                actionButton("contact", "contact", icon = icon("envelope"),class = "btn-info-2 my-2"),
                 
                 
               ),
