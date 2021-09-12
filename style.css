@@ -1,0 +1,205 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+
+:root {
+  --primary_col: #7cb5ec;
+}
+
+html, body {
+    font-family: 'Inter';
+    font-weight: 400;
+    background-color: #d5d5d561;
+}
+
+
+
+.split {
+  position: fixed;
+  z-index: 1;
+  top: 0;
+  bottom: 0;
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+
+.left-intro {
+  width: 30%;
+  left: 0;
+  background-color: var(--primary_col);
+  border-right: solid 1px gray;
+  z-index: 9 !important;
+}
+
+.right-intro {
+  width: 70%;
+  right: 0;
+  background-color: rgb(247, 247, 247);
+  z-index: 9 !important;
+}
+
+.intro-title {
+  color: white;
+  width: 90%;
+  font-weight: 700;
+  font-size: calc(1rem + 2.5vw);
+  line-height: 1.1;
+}
+
+.intro-subtitle {
+    font-size: calc(1.175rem + 1.3vw);
+  color: white;
+}
+
+.centered {
+  width: 80%;
+  height: 100%;
+  font-size: 110%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.pos-low {
+  width: 100%;
+  height: 100%;
+  font-size: 110%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+
+.btn-start {
+  border-radius: 30px;
+  border: solid 1px lightgray;
+  min-width: 50px;
+  width: 200px;
+  background-color: var(--primary_col);
+  color: white;
+  transition: all .1s ease-in-out;
+  font-size: 110%;
+
+}
+.btn-start:hover {
+  opacity: 0.9;
+  color: white;
+  transform: scale(1.05)
+}
+
+
+.btn-adj {
+  border-radius: 10px;
+  border: solid 1px lightgray;
+  padding: 5px 10px;
+  background-color: var(--primary_col);
+  color: white;
+  transition: all .1s ease-in-out;
+
+}
+.btn-adj:hover {
+  opacity: 0.9;
+  color: white;
+  transform: scale(1.05)
+}
+
+
+.container-fluid {
+    margin: 0;
+    padding: 0;
+}
+
+
+.left-main {
+  min-width: 300px;
+  max-width: 400px;
+
+}
+
+.main-right {
+    
+}
+
+.main {
+    
+    display: flex;
+    flex-direction: row;
+    
+    position: fixed;
+      z-index: 1;
+      top: 0;
+      bottom: 0;
+      overflow-y: scroll;
+      overflow-x: scroll;
+}
+
+.val-box{
+    border-radius: 25px;
+    border: solid 1px lightgray;
+    display: inline-block;
+    padding: 5px 10px;
+    margin-bottom: 20px;
+    color: black;
+}
+
+.accent {
+    font-weight: bold;
+    font-size: 110%;
+    display: inline;
+}
+
+.res {
+    font-weight: 300;
+    font-size: calc(1.3rem + .5vw);
+}
+
+.irs--shiny .irs-bar, .irs--shiny .irs-from, .irs--shiny .irs-to, .irs--shiny .irs-single {
+    background-color: #7cb5ec;
+}
+
+.control-label {
+    text-align: center;
+}
+
+.form-group .shiny-input-container{
+ text-align: center;   
+}
+
+.form-control {
+    font-size: 1rem !important;
+}
+
+
+.res-card {
+    min-width: 400px;
+    max-width: 800px;
+}
+
+.credits {
+    position: fixed; 
+    bottom: 20px; 
+    left: 20px;
+    color: var(--primary_col);
+    font-weight: 300;
+}
+
+.bg-primary_col {
+    background-color: var(--primary_col);
+}
+
+
+
+.btn-info-2 {
+  border-radius: 10px;
+  border: solid 1px lightgray;
+  padding: 10px 15px;
+  background-color: var(--primary_col);
+  color: white;
+  font-size: 110%;
+  transition: all .1s ease-in-out;
+  margin: 0 10px;
+
+}
+.btn-info-2:hover {
+  opacity: 0.9;
+  color: white;
+  transform: scale(1.05)
+}
