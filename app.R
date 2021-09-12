@@ -37,9 +37,11 @@ ui <- fillPage(
             <div class="pos-low px-xl-5 px-lg-3 px-md-2 px-sm-0">
                 <div class="intro-title text-start">UK QALY SHORTFALL CALULCATOR</div>
                 <div class="intro-subtitle  text-start mt-3">Subtitle</div>
-                <div>
-                    <img src="sheffield_logo.png" width="45%" alt="" class="d-inline-block pe-3 mt-5">
-                    <img src="york_logo.png" width="45%" alt="" class="d-inline-block pe-3 mt-5">
+                <div class = "row">
+                    <img src="sheffield_logo.png" width="49%" alt="" class="flex-fill  col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 m-auto my-3">
+                    <img src="york_logo.png" width="49%" alt="" class=" flex-fill  col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 m-auto my-3">
+                    <img src="bresmed_logo_copy.png" width="65%" alt="" class=" col-8 col-xl-8 col-lg-8 col-md-8 col-sm-12 m-auto my-3">
+                    
                 </div>
             </div>
         </div>
@@ -257,12 +259,18 @@ ui <- fillPage(
               )
               
               ),
+              
+              
+              # ACTIONS ---------
               div(
                 class = "shadow border rounded-3  py-3 bg-white res-card flex-fill me-1 mb-3 px-3 py-5 d-flex justify-content-center",
-                actionButton("download", "download", icon = icon("download"),class = "btn-info-2"),
-                actionButton("info", "info",icon = icon("info-circle"), class = "btn-info-2"),
-                actionButton("sources", "sources", icon = icon("book"), class = "btn-info-2"),
-                actionButton("contact", "contact", icon = icon("envelope"),class = "btn-info-2"),
+                downloadButton("download", "download", icon = icon("download"),class = "btn-info-2 shiny-download-link"),
+                actionButton("info", "info",icon = icon("info-circle"), class = "btn-info-2", "data-bs-toggle"="modal", "data-bs-target"="#infoModal"),
+                actionButton("sources", "sources", icon = icon("book"), class = "btn-info-2", "data-bs-toggle"="modal", "data-bs-target"="#sourcesModal"),
+                actionButton("code", "code", icon = icon("code"), class = "btn-info-2"),
+                actionButton("contact", "contact", icon = icon("envelope"),class = "btn-info-2 "),
+                
+                
               ),
             ),
           
@@ -287,7 +295,88 @@ ui <- fillPage(
   
   
   
+),
+
+
+# MODALS ----------
+# data modal
+div(
+  class="modal fade", id="sourcesModal", tabindex="-1", "aria-labelledby"="sourcesModalLabel",  "aria-hidden"="true",
+  div(
+    class="modal-dialog modal-dialog-scrollable modal-lg",
+    div(
+      class = "modal-content",
+      div(
+        class="modal-header",
+        div(
+          class="modal-title text-center h5", 
+          id="sourcesModalLabel",
+          "Sources"
+        )
+      ),
+      div(
+        class = "py-3 px-4",
+        style = "overflow-y:scroll;",
+        div(
+          class = "accent p",
+          "EQ-5D-5L scores by age and sex were pooled from:"
+          ),
+        p(
+          tags$li(class ="px-5","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2017. UK Data Service (2021)"),
+          tags$li(class ="px-5","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2018. UK Data Service (2021)")
+          ),
+        div(
+          class = "accent p",
+          "Lifetables were taken from:"
+        ),
+        tags$li(class ="px-5","ONS: National Life Tables, United Kingdom, 1980-1982 to 2017-2019. 2020.", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesunitedkingdomreferencetables", "link")),
+        
+        
+        # tableOutput("raw_data"),
+      ),
+      HTML('
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>')
+    )
+  )
+),
+
+# info model
+div(
+  class="modal fade", id="infoModal", tabindex="-1", "aria-labelledby"="infoModalLabel",  "aria-hidden"="true",
+  div(
+    class="modal-dialog modal-dialog-scrollable",
+    div(
+      class = "modal-content",
+      div(
+        class="modal-header",
+        div(
+          class="modal-title text-center h5", 
+          id="infoModalLabel",
+          "very important information"
+        )
+      ),
+      div(
+        class = "p-3 m-auto",
+        style = "overflow-y:scroll;",
+        "Text"
+      ),
+      HTML('
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+      </div>')
+    )
+    
+  )
 )
+
+
+
+
+
+
+
 )
 
 
@@ -596,6 +685,49 @@ server <- function(input, output, session){
     
     
   })
+  
+  # raw data -------
+  # output$raw_data = renderTable({
+  #   ref_df_formatted = ref_df[,c("age5_str", "sex", "cw")]
+  #   ref_df_formatted = ref_df_formatted[!duplicated(ref_df_formatted),]
+  #   ref_df_formatted = reshape(ref_df_formatted, direction = "wide", idvar  = "age5_str", timevar = "sex")
+  #   names(ref_df_formatted) = c("age","males","females")
+  #   ref_df_formatted
+  # })
+  
+
+  # download handler ------
+  output$download <- downloadHandler(
+    filename = function() {
+      paste("shortfall-", Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      
+      download_data = data.frame(
+        parameter = c(
+          "patient age",
+          "% female",
+          "discount rate",
+          "QALYs without disease",
+          "QALYs with disease",
+          "absolute shortfall",
+          "proportional shortfall"
+          ),
+        value = round(c(
+          input$start_age,
+          input$sex_mix,
+          input$disc_rate,
+          max(dat$rf1$QALE_cum),
+          input$remaining_qalys,
+          dat$shortfall_abs,
+          dat$shortfall_prop
+        ),2)
+      )
+      
+      write.csv(download_data, file, row.names = F)
+      
+    }
+  )
   
    
 

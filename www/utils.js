@@ -38,5 +38,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
         // showFadeIn(main_r, 500)
     });
 
+      // send email when contact is clicked
+      document.querySelector("#contact").addEventListener("click", () => {
+        window.location = "mailto:p.schneider@sheffield.ac.uk";
+      });
+      
+      
+      // link to github source code
+      document.querySelector("#code").addEventListener("click", () => {
+        window.open('https://github.com/bitowaqr/shortfall', '_blank')
+      });
+
 
   })
