@@ -5,7 +5,7 @@
 }
 
 html, body {
-    font-family: 'Inter';
+    font-family: 'Inter', sans-serif;
     font-weight: 400;
     background-color: #d5d5d561;
 }
@@ -25,7 +25,7 @@ html, body {
   width: 30%;
   left: 0;
   background-color: var(--primary_col);
-  border-right: solid 1px gray;
+  /*border-right: solid 1px gray;*/
   z-index: 9 !important;
 }
 
@@ -148,7 +148,7 @@ html, body {
 
 .res {
     font-weight: 300;
-    font-size: calc(1.3rem + .5vw);
+    /*font-size: calc(1.3rem + .5vw);*/
 }
 
 .irs--shiny .irs-bar, .irs--shiny .irs-from, .irs--shiny .irs-to, .irs--shiny .irs-single {
