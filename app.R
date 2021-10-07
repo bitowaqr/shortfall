@@ -7,7 +7,7 @@ library(shinyWidgets)
 library(highcharter)
 library(dplyr)
 
-ref_df = read.csv("./ref_df.csv")
+ref_df = read.csv("./data/ref_df.csv")
 
 compQale = function(df, prop_female = 0.5, start_age = 50, disc_rate = 0.035){
   df = df[df$age >= start_age,]
