@@ -22,7 +22,7 @@ html, body {
 }
 
 .left-intro {
-  width: 30%;
+  width: 35%;
   left: 0;
   background-color: var(--primary_col);
   /*border-right: solid 1px gray;*/
@@ -30,7 +30,7 @@ html, body {
 }
 
 .right-intro {
-  width: 70%;
+  width: 65%;
   right: 0;
   background-color: rgb(247, 247, 247);
   z-index: 9 !important;
@@ -67,6 +67,9 @@ html, body {
   flex-direction: column;
 }
 
+#intro-list li {
+  margin-bottom: 10px;
+}
 
 .btn-start {
   border-radius: 30px;
@@ -181,6 +184,44 @@ html, body {
     font-weight: 300;
 }
 
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.credits .tooltiptext {
+  visibility: hidden;
+  width: 300px;
+  background-color: #555;
+  color: #fff;
+  border-radius: 3px;
+  padding: 3px;
+  position: absolute;
+  z-index: 1;
+  bottom: 150%;
+  left: 50%;
+  margin-left: -75px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltiptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+.credits:hover .tooltiptext {
+  visibility: visible;
+  opacity: 1;
+}
+
 .bg-primary_col {
     background-color: var(--primary_col);
 }
@@ -203,3 +244,10 @@ html, body {
   color: white;
   transform: scale(1.05)
 }
+
+#info-modal-content {
+  width: 800px !important; 
+}
+
+
+
