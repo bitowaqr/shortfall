@@ -7,69 +7,27 @@ library(shinyWidgets)
 library(highcharter)
 library(dplyr)
 
+# load ref df with life table (ONS) and HRQoL estimates (HSE) by age and sex 
 ref_df = read.csv("./data/ref_df.csv")
 
-compQale = function(df, prop_female = 0.5, start_age = 50, disc_rate = 0.035){
-  df = df[df$age >= start_age,]
-  df = df[order(df$age),]
-  df_female = df[df$sex == "female",c("age","cw","lx","dx","mx")]
-  df_male = df[df$sex == "male",c("age","cw","lx","dx","mx")]
-  
-  df_comp = data.frame(
-    age = df_female$age,
-    cw = (1-prop_female) * df_male$cw  + prop_female * df_female$cw,
-    lx = (1-prop_female) * df_male$lx  + prop_female * df_female$lx,
-    dx = (1-prop_female) * df_male$dx  + prop_female * df_female$dx,
-    mx = (1-prop_female) * df_male$mx  + prop_female * df_female$mx
-  )
-  
-  # person years in year i
-  df_comp$Lx = NA
-  for(i in 2:nrow(df_comp)){
-    df_comp$Lx[i-1] = df_comp$lx[i] + (0.5 * df_comp$dx[i-1])
-  }
-  df_comp$Lx[nrow(df_comp)] = (df_comp$lx[nrow(df_comp)]-df_comp$dx[nrow(df_comp)]) + (0.5 * df_comp$dx[nrow(df_comp)])
-  
-  # person QALYs in year i
-  df_comp$Yx = df_comp$cw * df_comp$Lx
-  
-  # apply discounting
-  v_disc <- 1/(1+disc_rate)^(0:(length(df_comp$Yx)-1))
-  df_comp$Yx = df_comp$Yx * v_disc
-  
-  # remaining person QALYs?
-  df_comp$Nx = NA
-  df_comp$Nx[nrow(df_comp)] = df_comp$Yx[nrow(df_comp)]
-  for(i in nrow(df_comp):2){
-    df_comp$Nx[i-1] = df_comp$Yx[i-1] + df_comp$Nx[i]
-  }
-  
-  # Quality adjusted life expectancy 
-  df_comp$Qx = df_comp$Nx / df_comp$lx
-  
-  q_factor = sum(df_comp$Yx) / df_comp$Qx[1]
-  
-  cw_by_year = df_comp$cw
-  df_comp$qalys_by_year = df_comp$Yx/q_factor 
-  df_comp$cumulative_qalys = cumsum(df_comp$qalys_by_year)
-  
-  # cumulative survival function
-  df_comp$S = 1-df_comp$mx
-  df_comp$S_cumulativ =  cumprod(df_comp$S)
-  
-  return(df_comp)
-  
-}
+# load function to compute life and quality-adjusted life expectancies
+source("./compQale.R")
+# compQale(ref_df)
+
+
+# load modal div content
+source("./modalDivs.R")
 
 # intensity_cols = colorRampPalette(c("black","orange","red"))
 
-# div(
-#   class="spinner-border", role="status",
-#   span(class="visually-hidden", "Loading...")
-# )
-
+# rename highchart donwload btn
+lang <- getOption("highcharter.lang")
+lang$contextButtonTitle <- "Download"
+options(highcharter.lang = lang)
 
 ui <- fillPage(
+  
+  # use bootstrap 5
   suppressDependencies("bootstrap"),
   tags$head(HTML('
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -77,18 +35,25 @@ ui <- fillPage(
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
     <title>QALY Shortfall Calculator</title>
                  ')),
-  
+  # enable shinyjs
   useShinyjs(),
-  includeCSS("style.css"),
+  # load js scripts
   includeScript("./www/utils.js"),
+  # load custom css
+  includeCSS("style.css"),
   
-  # INTRO --------
+  
+  # LANDING PAGE --------
   HTML('
-<div id = "intro_page">
+      <div id = "intro_page">
         <div class="split left-intro border-end border-dark">
             <div class="pos-low px-xl-5 px-lg-3 px-md-2 px-sm-0">
-                <div class="intro-title text-start">UK QALY SHORTFALL CALCULATOR</div>
-                <div class="intro-subtitle  text-start mt-3">Subtitle</div>
+                <div class="intro-title text-start">
+                  QALY SHORTFALL CALCULATOR
+                </div>
+                <div class="intro-subtitle  text-start my-3 lh-1">
+                  
+                </div>
                 <div class = "row">
                     <img src="sheffield_logo.png" width="49%" alt="" class="flex-fill  col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 m-auto my-3">
                     <img src="york_logo.png" width="49%" alt="" class=" flex-fill  col-6 col-xl-6 col-lg-6 col-md-6 col-sm-12 m-auto my-3">
@@ -100,21 +65,22 @@ ui <- fillPage(
 
         <div class="split right-intro">
             <div class="centered px-xl-5 px-lg-3 px-md-2 px-sm-0">
-               <div class="display-5">Some text here</div>
-                <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae natus repudiandae voluptatum excepturi eos voluptates sunt, architecto officia maiores mollitia nobis. Dolor praesentium vel tenetur voluptatum, et unde reprehenderit quae!
-                </p>
-                <div class="display-5 mb-3">Some text here</div> 
-                <ul>
-                    <li>This is an important point</li>
-                    <li>This is an important point</li>
-                    <li>This is an important point</li>
-                </ul>
-                <div id = "close_intro" class="btn btn-start py-2 px-3 mt-3 shadow">Start <img src="arrow-right-solid.svg" width="15px"/></div>
+               
+              <div class="display-5 mb-3">
+                QALE reference values for England
+              </div> 
+              <ul id = "intro-list" class ="fs-4 lh-2 ">
+                <li>NICE is considering to introduce severity weights for QALYs. </li>
+                <li>The aim is to prioritise treatments for severe diseases.</li>
+                <li>The approach is based on the proportional and absolute QALY shortfall. </li>
+                <li>The shortfall refers to the difference in the quality-adjusted life expectancy (QALE) of a person with and a person without a particular disease.</li>
+                <li>This app provides QALE reference values for the English general population. </li>
+              </ul>
+            <div id = "close_intro" class="btn btn-start fs-3  px-3 mt-1 shadow">Start <img src="arrow-right-solid.svg" width="15px"/></div>
             </div>
         </div>
     </div>
-'),
+  '),
   
   
   div(
@@ -128,7 +94,7 @@ ui <- fillPage(
       class = "left-main px-xl-5 px-lg-3 px-md-2 px-sm-1 pt-3 shadow border rounded-3  col-4 bg-white me-3",
       div(
         class = "h3 mb-5 mt-3 text-center fw-light",
-        "UK QALY SHORTFALL CALCULATOR"
+        "QALY SHORTFALL CALCULATOR"
         ),
       # inputs
       div(
@@ -139,11 +105,11 @@ ui <- fillPage(
           class = "control-label text-center mb-2  ",
           "Age of the patient population"
         ),
-        sliderInput("start_age", NULL, min = 0, max = 99, value = 75, width = "100%"),
+        sliderInput("start_age", NULL, min = 0, max = 99, value = 0, width = "100%"),
         
         div(
           class = "control-label text-center mb-2  mt-4",
-          "% Women in the patient population"
+          "% women in the patient population"
         ),
         sliderInput("sex_mix", NULL, min = 0, max = 100, value = 50, width = "100%"),
         
@@ -161,7 +127,7 @@ ui <- fillPage(
             inputId = "remaining_qalys", 
             label = NULL, 
             minimumValue = 0, maximumValue = 49,decimalPlaces = 0,
-            value = 5, 
+            value = 30, 
             width = "40%"
             ),
         actionButton("add_1","+", class = "btn-adj mx-3"), 
@@ -195,8 +161,13 @@ ui <- fillPage(
       
       ),
       div(
-        class = "credits",
-        HTML("&copy; credits 2021")
+        class = "credits small a",
+        style = "cursor: pointer;",
+        id = "credits",
+        HTML("&copy; Schneider et al. 2021"),
+          span(class="tooltiptext", id="credits_copied",
+          "Paul Schneider, James Love-Koh, Simon McNamara, Tim Doran, Nils Gutacker. QALY Shortfall Calculator. 2021. https://r4scharr.shinyapps.io/shortfall/"
+          )
       )
     
       
@@ -292,18 +263,17 @@ ui <- fillPage(
               
               ),
               
-              
               # ACTIONS ---------
               div(
                 class = "shadow border rounded-3  py-3 bg-white res-card flex-fill me-1 mb-3 px-3 py-4 d-flex justify-content-center flex-wrap",
-                downloadButton("download", "download", icon = icon("download"),class = "btn-info-2 my-2"),
                 actionButton("info", "info",icon = icon("info-circle"), class = "btn-info-2 my-2", "data-bs-toggle"="modal", "data-bs-target"="#infoModal"),
+                downloadButton("download", "download", icon = icon("download"),class = "btn-info-2 my-2"),
                 actionButton("sources", "sources", icon = icon("book"), class = "btn-info-2 my-2", "data-bs-toggle"="modal", "data-bs-target"="#sourcesModal"),
                 actionButton("code", "code", icon = icon("code"), class = "btn-info-2 my-2"),
                 actionButton("contact", "contact", icon = icon("envelope"),class = "btn-info-2 my-2"),
                 
                 
-              ),
+              )
             ),
           
           
@@ -333,14 +303,14 @@ ui <- fillPage(
                   "Absolute shortfall" = "bar",
                   "Proportional shortfall" = "pie",
                   "Cumulative QALYs" = "cumulative_qalys",
-                  "HRQoL by year" = "cw",
+                  "HRQoL by year" = "hrqol",
                   "Cumulative survival" = "S_cumulativ"
                 )))
               ),
               highchartOutput("high_chart",  height = "400px")
             )
-            )
-      
+        )
+         
     )
 )
   
@@ -349,80 +319,7 @@ ui <- fillPage(
 ),
 
 
-# MODALS ----------
-# data modal
-div(
-  class="modal fade", id="sourcesModal", tabindex="-1", "aria-labelledby"="sourcesModalLabel",  "aria-hidden"="true",
-  div(
-    class="modal-dialog modal-dialog-scrollable modal-lg",
-    div(
-      class = "modal-content",
-      div(
-        class="modal-header",
-        div(
-          class="modal-title text-center h5", 
-          id="sourcesModalLabel",
-          "Sources"
-        )
-      ),
-      div(
-        class = "py-3 px-4",
-        style = "overflow-y:scroll;",
-        div(
-          class = "accent p",
-          "EQ-5D-5L scores by age and sex were pooled from:"
-          ),
-        p(
-          tags$li(class ="px-5","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2017. UK Data Service (2021)"),
-          tags$li(class ="px-5","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2018. UK Data Service (2021)")
-          ),
-        div(
-          class = "accent p",
-          "Lifetables were taken from:"
-        ),
-        tags$li(class ="px-5","ONS: National Life Tables, United Kingdom, 1980-1982 to 2017-2019. 2020.", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesunitedkingdomreferencetables", "link")),
-        
-        
-        # tableOutput("raw_data"),
-      ),
-      HTML('
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>')
-    )
-  )
-),
-
-# info model
-div(
-  class="modal fade", id="infoModal", tabindex="-1", "aria-labelledby"="infoModalLabel",  "aria-hidden"="true",
-  div(
-    class="modal-dialog modal-dialog-scrollable",
-    div(
-      class = "modal-content",
-      div(
-        class="modal-header",
-        div(
-          class="modal-title text-center h5", 
-          id="infoModalLabel",
-          "very important information"
-        )
-      ),
-      div(
-        class = "p-3 m-auto",
-        style = "overflow-y:scroll;",
-        "Text"
-      ),
-      HTML('
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-      </div>')
-    )
-    
-  )
-)
-
-
+modalDivs()
 
 
 
@@ -470,6 +367,7 @@ server <- function(input, output, session){
   })
   
   
+  
   # reset remaining LE based on start age -----
   observeEvent(input$start_age,{
     
@@ -494,49 +392,11 @@ server <- function(input, output, session){
   observe({
     
     dat$res = compQale(
-      df = ref_df, 
+      ons_df = ref_df, 
       prop_female = input$sex_mix/100, 
       start_age = input$start_age, 
       disc_rate = input$disc_rate/100  
       )
-    
-    
-    # # discount rate
-    # disc_rate = input$disc_rate/100
-    # v_disc <- 1/(1+disc_rate)^(0:100)
-    # 
-    # rf1_m = ref_df %>%
-    #   filter(sex == "male") %>%
-    #   filter(age >= input$start_age) 
-    # 
-    # 
-    # discounted_qale_m = rf1_m$QALE * v_disc[1:nrow(rf1_m)]
-    # rf1_m$QALE_cum = c(0, cumsum(discounted_qale_m[-length(discounted_qale_m)]))
-    # 
-    # rf1_f = ref_df %>%
-    #   filter(sex == "female") %>%
-    #   filter(age >= input$start_age) 
-    # 
-    # discounted_qale_f = rf1_f$QALE * v_disc[1:nrow(rf1_f)]
-    # 
-    # rf1_f$QALE_cum = c(0, cumsum(discounted_qale_f[-length(discounted_qale_f)]))
-    # 
-    # dat$rf1 = data.frame(
-    #   age = rf1_m$age,
-    #   QALE_cum = (rf1_f$QALE_cum * (input$sex_mix/100)  + rf1_m$QALE_cum * (1- (input$sex_mix/100)))
-    # )
-    
-    # if(input$auto_survival){
-    #   nearest_approx =  dat$rf1$age[which.min(abs(input$remaining_qalys - dat$rf1$QALE_cum))]
-    #   nearest_approx = nearest_approx  - input$start_age
-    #   updateAutonumericInput(session, "remaining_survival", value = nearest_approx)  
-    # }
-    
-    
-    # dat$rf2 = data.frame(
-    #   age = c(input$start_age, input$start_age+input$remaining_survival),
-    #   QALE_cum = c(0, input$remaining_qalys)
-    # )
     
     dat$shortfall_abs = dat$res$Qx[1] - input$remaining_qalys
     
@@ -554,8 +414,32 @@ server <- function(input, output, session){
   
   
   
-  # LINE chart ---------
+  # HIGH CHARTS ---------
   output$high_chart = renderHighchart({
+    highchart_out() %>%
+    hc_exporting(
+      enabled = TRUE,
+      chartOptions = list(
+        chart = list(
+          backgroundColor = "white"
+          )
+      ),
+      buttons = list(
+        contextButton = list(
+          symbol = "download",
+          verticalAlign = "bottom",
+          horizontalAlign = "left",
+          #titleKey = "oinf",
+#          menuItems = NULL,
+          onclick = JS("function () {
+                    this.exportChart();
+                }")
+        )
+      )
+    )
+  })
+  
+  highchart_out = reactive({
     
     
     if(dat$shortfall_abs < 0){
@@ -596,7 +480,8 @@ server <- function(input, output, session){
           valueDecimals = 1,
           valueSuffix = '%'
         ) %>%
-        hc_colors(c("#7cb5ec","gray"))
+        hc_colors(c("#7cb5ec","gray")) 
+      
       
       return(p1)
     } 
@@ -648,12 +533,13 @@ server <- function(input, output, session){
     
     disc_str = input$disc_rate > 0
     
+    
     if(input$chart_type == "cumulative_qalys"){
       title = round(max(dat$res$Qx[1]),2)
       title = paste0("QALYs without the disease: <b>",title,"</b>",ifelse(disc_str,"(discounted)",""))  
       ytitle = "Cumulative QALYs"
     }
-    if(input$chart_type == "cw"){
+    if(input$chart_type == "hrqol"){
       title = paste0("HRQoL over the lifecourse", ifelse(disc_str,"(undiscounted)",""))
       ytitle = "EQ-5D score"
     }
@@ -672,6 +558,7 @@ server <- function(input, output, session){
       age = dat$res$age,
       var = dat$res[,input$chart_type]
     )
+    
     
     highchart(
       hc_opts = list(),
@@ -800,7 +687,6 @@ server <- function(input, output, session){
     }
   )
   
-   
 
 }
 

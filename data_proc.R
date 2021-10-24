@@ -64,7 +64,7 @@
   
 # Save combined data set
   # write.csv(hse,"./hse.csv",row.names = F)
-  # hse <- read.csv("./hse.csv" )
+  # hse <- read.csv("./data/hse.csv" )
   
 # compute eq-5d scores
   # 1. CW value set
@@ -78,18 +78,17 @@
 
   
 # fit simple lm (IGNORE MISSING DATA)
-  fit_cw = lm(eq_cw ~ age * sex, hse, weights = wt_int)
+  fit_cw = lm(eq_cw ~ as.factor(age) * sex, hse, weights = wt_int)
   # fit_vt = lm(eq_vt ~ age * sex, hse, weights = wt_int)
   
 
 
 # ONS -------------
-  ons_male = read.csv(file = "./data_raw/ons_lt_male_1719.csv")
+  ons_male = read.csv(file = "./data/ons_lt_male_1719.csv")
   ons_male$sex = "male"
-  ons_female = read.csv(file = "./data_raw/ons_lt_female_1719.csv")
+  ons_female = read.csv(file = "./data/ons_lt_female_1719.csv")
   ons_female$sex = "female"
   ons = rbind(ons_male,ons_female)
-  
   
 # QALE REFERENCE DF (WRONG) ------------
   
@@ -100,7 +99,6 @@
   )
   
   ludf$cw = predict(fit_cw, newdata = ludf)
-  # ludf$vt = predict(fit_vt, newdata = ludf)
   
   ludf = merge(ludf, age5map, "age")
   
@@ -138,6 +136,6 @@
   ref_df = ref_df[order(ref_df$age),]
   
   # SAVE REFERENCE DF ------
-  write.csv(ref_df,"ref_df.csv", row.names = F)
+  write.csv(ref_df,"./data/ref_df.csv", row.names = F)
   
   
