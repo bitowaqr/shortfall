@@ -45,8 +45,8 @@ div(
         ),
         tags$li(
           class ="px-5",
-          "ONS: National Life Tables, United Kingdom, 1980-1982 to 2017-2019. (2020).", 
-          a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesunitedkingdomreferencetables", "link", "target" = "_blank")
+          "ONS: National Life Tables, England, 1980-1982 to 2017-2019. (2021).", 
+          a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesenglandreferencetables", "link", "target" = "_blank")
         )
       ),
       

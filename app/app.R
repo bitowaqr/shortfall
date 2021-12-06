@@ -7,16 +7,15 @@ library(shinyWidgets)
 library(highcharter)
 library(dplyr)
 
-# load ref df with life table (ONS) and HRQoL estimates (HSE) by age and sex 
+# load ref df with English life table (ONS) and HRQoL estimates (HSE and MVH) by age and sex 
 ref_df = read.csv("./data/ref_df.csv")
+mvh_df = read.csv("./data/mvh_df.csv")
 
 # load function to compute life and quality-adjusted life expectancies
-source("./compQale.R")
-# compQale(ref_df)
-
+source("./R/compQale.R")
 
 # load modal div content
-source("./modalDivs.R")
+source("./R/modalDivs.R")
 
 # intensity_cols = colorRampPalette(c("black","orange","red"))
 
@@ -86,12 +85,13 @@ ui <- fillPage(
   div(
     class="main container-fluid",
       
-    div(class = "row w-100 flex-nowrap ms-0",
+    div(
+      class = "row w-100 flex-nowrap ms-0",
     
     
     # INPUT PANEL ------------
     div(
-      class = "left-main px-xl-5 px-lg-3 px-md-2 px-sm-1 pt-3 shadow border rounded-3  col-4 bg-white me-3",
+      class = "left-main px-xl-5 px-lg-3 px-md-2 px-sm-1 pt-3 shadow border rounded-3  col-4 bg-white me-3 d-flex flex-column",
       div(
         class = "h3 mb-5 mt-3 text-center fw-light",
         "QALY SHORTFALL CALCULATOR"
@@ -116,21 +116,21 @@ ui <- fillPage(
         # Remaining QALYs
         div(
           class = "control-label text-center mb-2  mt-4",
-          HTML("Remaining (discounted)<br> QALYs of untreated"), 
+          HTML("Remaining QALYs of<br> untreated (discounted)"), 
           ),
         
       div(
         class = "d-flex flex-row align-items-center justify-content-center",
         # style = "white-space: nowrap !important;",
-        actionButton("take_1","-", class = "btn-adj mx-3"), 
+        actionButton("take_1","-", class = "btn-adj mx-3 flex-fill"), 
           autonumericInput(
             inputId = "remaining_qalys", 
             label = NULL, 
             minimumValue = 0, maximumValue = 49,decimalPlaces = 0,
-            value = 30, 
-            width = "40%"
+            value = 10, 
+            width = "100%"
             ),
-        actionButton("add_1","+", class = "btn-adj mx-3"), 
+        actionButton("add_1","+", class = "btn-adj mx-3 flex-fill"), 
       ),
       
       # discount rate
@@ -141,34 +141,55 @@ ui <- fillPage(
       div(
         class = "d-flex flex-row align-items-center justify-content-center",
         # style = "white-space: nowrap !important;",
-        actionButton("take_1_disc","-", class = "btn-adj mx-3"), 
+        actionButton("take_1_disc","-", class = "btn-adj mx-3 flex-fill"), 
         autonumericInput(
           inputId = "disc_rate", 
           label = NULL, 
           minimumValue = 0, maximumValue = 10,
           decimalPlaces = 1,
           value = 1.5, currencySymbol = "%",
-          width = "40%"
+          currencySymbolPlacement = "s",
+          width = "100%"
         ),
-        actionButton("add_1_disc","+", class = "btn-adj mx-3"), 
+        actionButton("add_1_disc","+", class = "btn-adj mx-3 flex-fill"), 
       ),
       div(
         class = "mt-2 ms-5",
         checkboxInput("no_discount", "no discounting", value = F)
-      )
-      
-      
-      
       ),
+      
+      # pop norm
       div(
-        class = "credits small a",
-        style = "cursor: pointer;",
-        id = "credits",
-        HTML("&copy; Schneider et al. 2021"),
-          span(class="tooltiptext", id="credits_copied",
-          "Paul Schneider, James Love-Koh, Simon McNamara, Tim Doran, Nils Gutacker. QALY Shortfall Calculator. 2021. https://r4scharr.shinyapps.io/shortfall/"
+        class = "control-label text-center  mb-2 mt-4",
+        "Select HRQoL norms"
+      ),
+      
+        selectizeInput(
+          inputId = "utils", 
+          label = NULL, 
+          choices = list(
+            "HSE 2017-2018 + EQ-5D-5L van Hout et al. crosswalk" = "vanHout",
+            "MVH 1993 - EQ-5D-3L MVH" = "mvh"
           )
       )
+      
+      
+     
+      ),
+      
+        HTML('<a 
+             id = "credits" 
+             style = "cursor: pointer;" 
+             class = "credits-container credits small a text-start" 
+             href="#" 
+             data-bs-toggle="tooltip" 
+             title="" 
+             data-bs-original-title="Paul Schneider, James Love-Koh, Simon McNamara, Tim Doran, Nils Gutacker. QALY Shortfall Calculator. 2021. https://r4scharr.shinyapps.io/shortfall/"
+             >
+             &copy; Schneider et al. 2021
+             </a>')
+      
+      
     
       
     ),
@@ -362,7 +383,7 @@ server <- function(input, output, session){
       enable("disc_rate")
       enable("add_1_disc")
       enable("take_1_disc")
-      updateAutonumericInput(session, "disc_rate", value = 1.5)
+      updateAutonumericInput(session, "disc_rate", value = 3.5)
     }
   })
   
@@ -391,11 +412,23 @@ server <- function(input, output, session){
   
   observe({
     
+    if(input$utils == "mvh"){
+      util_df =   mvh_df
+      utils = "tto"
+    }
+    
+    if(input$utils == "vanHout"){
+      util_df = ref_df
+      utils = "cw"
+    }
+    
+    
     dat$res = compQale(
-      ons_df = ref_df, 
+      ons_df = util_df, 
       prop_female = input$sex_mix/100, 
       start_age = input$start_age, 
-      disc_rate = input$disc_rate/100  
+      disc_rate = input$disc_rate/100,
+      utils = utils
       )
     
     dat$shortfall_abs = dat$res$Qx[1] - input$remaining_qalys

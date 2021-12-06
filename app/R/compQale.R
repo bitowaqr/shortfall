@@ -15,7 +15,7 @@ compQale = function(
   
   df_comp = data.frame(
     age = df_female$age,
-    cw = (1-prop_female) * df_male[,utils]  + prop_female * df_female$cw,
+    utils = (1-prop_female) * df_male[,utils]  + prop_female * df_female[,utils],
     lx = (1-prop_female) * df_male$lx  + prop_female * df_female$lx,
     dx = (1-prop_female) * df_male$dx  + prop_female * df_female$dx,
     mx = (1-prop_female) * df_male$mx  + prop_female * df_female$mx,
@@ -30,7 +30,7 @@ compQale = function(
   df_comp$Lx[nrow(df_comp)] = (df_comp$lx[nrow(df_comp)]-df_comp$dx[nrow(df_comp)]) + (0.5 * df_comp$dx[nrow(df_comp)])
   
   # person QALYs in year i
-  df_comp$Yx = df_comp[,utils] * df_comp$Lx
+  df_comp$Yx = df_comp$utils * df_comp$Lx
   
   # apply discounting
   v_disc <- 1/(1+disc_rate)^(0:(length(df_comp$Yx)-1))
@@ -55,7 +55,7 @@ compQale = function(
   # cumulative survival function
   df_comp$S = 1-df_comp$mx
   df_comp$S_cumulativ =  cumprod(df_comp$S)
-  df_comp$hrqol = df_comp[,utils]
+  df_comp$hrqol = df_comp$utils
   
   df_comp = df_comp[,c("age","hrqol","ex","Qx","S_cumulativ","cumulative_qalys")]
   

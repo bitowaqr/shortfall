@@ -50,19 +50,25 @@ document.addEventListener('DOMContentLoaded', (event) => {
       });
 
 
+  // author tooltip
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    })
 
-
+      var exampleEl = document.querySelector("#credits")
+      var original = exampleEl.getAttribute('data-bs-original-title');
+      var tooltip = new bootstrap.Tooltip(exampleEl)
+      
     document.querySelector("#credits").addEventListener("click", () => {
-   
      /* Copy the text inside the text field */
-     txt = "Paul Schneider, James Love-Koh, Simon McNamara, Tim Doran, Nils Gutacker. QALY Shortfall Calculator. 2021. https://r4scharr.shinyapps.io/shortfall/"
-      navigator.clipboard.writeText(txt);
-      /* Alert the copied text */
-      var original = document.querySelector("#credits_copied").innerHTML;
-      document.querySelector("#credits_copied").innerHTML = "<b>Copied to cliboard!</b> " + original;
+      navigator.clipboard.writeText(original);
+      document.querySelector("#credits").setAttribute('data-bs-original-title', "Copied to cliboard!");
+      tooltip.show()
       setTimeout(function() {
-        document.querySelector("#credits_copied").innerHTML = original;
-      }, 5000); 
+        tooltip.hide()
+        document.querySelector("#credits").setAttribute('data-bs-original-title', original);
+      }, 2000); 
 
       
       

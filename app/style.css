@@ -1,7 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
 
 :root {
-  --primary_col: #7cb5ec;
+  --primary_col: #012d5c;
+  /* #7cb5ec */
 }
 
 html, body {
@@ -114,7 +115,6 @@ html, body {
 .left-main {
   min-width: 300px;
   max-width: 400px;
-
 }
 
 .main-right {
@@ -155,7 +155,7 @@ html, body {
 }
 
 .irs--shiny .irs-bar, .irs--shiny .irs-from, .irs--shiny .irs-to, .irs--shiny .irs-single {
-    background-color: #7cb5ec;
+    background-color: var(--primary_col);
 }
 
 .control-label {
@@ -177,27 +177,25 @@ html, body {
 }
 
 .credits {
-    position: fixed; 
-    bottom: 20px; 
-    left: 20px;
+    margin-top: auto; 
     color: var(--primary_col);
     font-weight: 300;
+    align-self: flex-start;
+    margin-bottom: 10px;
 }
 
 
 .tooltip {
-  position: relative;
   display: inline-block;
 }
 
 .credits .tooltiptext {
-  visibility: hidden;
   width: 300px;
   background-color: #555;
   color: #fff;
   border-radius: 3px;
   padding: 3px;
-  position: absolute;
+  position: fixed;
   z-index: 1;
   bottom: 150%;
   left: 50%;
@@ -206,21 +204,6 @@ html, body {
   transition: opacity 0.3s;
 }
 
-.tooltiptext::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  margin-left: -5px;
-  border-width: 5px;
-  border-style: solid;
-  border-color: #555 transparent transparent transparent;
-}
-
-.credits:hover .tooltiptext {
-  visibility: visible;
-  opacity: 1;
-}
 
 .bg-primary_col {
     background-color: var(--primary_col);
