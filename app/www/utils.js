@@ -1,9 +1,10 @@
 
 
+
 document.addEventListener('DOMContentLoaded', (event) => {
 
-    // fade out intor page
-    function removeFadeOut( el, speed ) {
+// fade out intor page
+    function removeFadeOut( el, speed , redraw = false) {
         var seconds = speed/1000;
         el.style.transition = "opacity "+seconds+"s ease";
 
@@ -11,14 +12,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
         setTimeout(function() {
             el.parentNode.removeChild(el);
         }, speed);
+        
+        if(redraw){
+          Shiny.setInputValue("disc_rate", 3.5001);
+        }
     }
 
-    // fade in main
-    function showFadeIn( el, speed ) {
-        var seconds = speed/1000;
-        el.style.transition = "opacity "+seconds+"s ease";
-        el.style.opacity = 1;
-    }
+    dom = document.querySelector("body");
+    overlay = dom.getElementsByClassName("waiter-overlay");
+
+    current_progress = 0,
+    step = 0.75;
+    interval = setInterval(function() {
+        current_progress += step;
+        progress = Math.round(Math.atan(current_progress) / (Math.PI / 2) * 102 ) 
+        $(".progress-bar")
+            .css("width", progress + "%")
+            .attr("aria-valuenow", progress)
+            .text(progress + "%");
+            
+        if (progress >= 100){
+            removeFadeOut(overlay[0], 1000, true)
+            clearInterval(interval)
+        }
+        
+    }, 100);
+
+
+  
 
     // speedy way to remove intor page: just press enter
     window.addEventListener('keydown', function(e){
@@ -26,17 +47,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
             document.querySelector("#close_intro").click()
         }
       });
-
-    // remove intro and show main when start is clicked
-    document.querySelector("#close_intro").addEventListener("click", () => {
-        removeFadeOut(document.querySelector('#intro_page'), 500);
-        // main_l = document.querySelector('#main-left');
-        // main_r = document.querySelector('#main-right');
-        // main_l.style.display = "block";
-        // main_r.style.display = "block";
-        // showFadeIn(main_l, 500)
-        // showFadeIn(main_r, 500)
-    });
 
       // send email when contact is clicked
       document.querySelector("#contact").addEventListener("click", () => {
