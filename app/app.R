@@ -160,7 +160,7 @@ ui <- fillPage(
              href="#" 
              data-bs-toggle="tooltip" 
              title="" 
-             data-bs-original-title="Paul Schneider, James Love-Koh, Simon McNamara, Tim Doran, Nils Gutacker. QALY Shortfall Calculator. 2021. https://r4scharr.shinyapps.io/shortfall/"
+             data-bs-original-title="Paul Schneider, Simon McNamara, James Love-Koh, Tim Doran, Nils Gutacker. QALY Shortfall Calculator. 2021. https://r4scharr.shinyapps.io/shortfall/"
              >
              &copy; Schneider et al. 2021
              </a>')
