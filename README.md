@@ -4,8 +4,7 @@ This repository contains the R source code for the preprint publication:
 
 Paul Schneider<sup>1</sup>, Simon McNamara<sup>1,2</sup>,James Love-Koh<sup>3,4</sup>, Tim Doran<sup>5</sup>, Nils Gutacker<sup>3</sup>
 
-<sup>1</sup> School of Health and Related Research, University of Sheffield, Sheffield, UK; <sup>2</sup> BresMed, Sheffield, UK; <sup>3</sup> Centre for Health Economics, University of York, York, UK; <sup>4</sup> The National Institute for Health and Care Excellence (NICE), London, UK; <sup>5</sup> Department of Health Sciences, University of York, York, UK.
-This app provides QALY reference values for the English general population and helps the user to compute the absolute and relative QALY shortfalls.
+<sup>1</sup> ScHARR, University of Sheffield, Sheffield, UK; <sup>2</sup> BresMed, Sheffield, UK; <sup>3</sup> CHE, University of York, York, UK; <sup>4</sup> NICE, London, UK; <sup>5</sup> Department of Health Sciences, University of York, York, UK.
 
 **doi: ...**
 
