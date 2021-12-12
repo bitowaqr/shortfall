@@ -6,7 +6,9 @@ Paul Schneider<sup>1</sup>, Simon McNamara<sup>1,2</sup>,James Love-Koh<sup>3,4<
 
 <sup>1</sup> ScHARR, University of Sheffield, Sheffield, UK; <sup>2</sup> BresMed, Sheffield, UK; <sup>3</sup> CHE, University of York, York, UK; <sup>4</sup> NICE, London, UK; <sup>5</sup> Department of Health Sciences, University of York, York, UK.
 
-**doi: ...**
+**Preprint on medRxiv: [Link](...)**
+
+**Shortfall shiny app: [Link](https://r4scharr.shinyapps.io/shortfall/)**
 
 *****
 
