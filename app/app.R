@@ -399,6 +399,9 @@ server <- function(input, output, session){
      highchart_out() %>%
        hc_exporting(
          enabled = TRUE,
+         formAttributes = list(
+           target = "_blank"
+           ),
          chartOptions = list(
            chart = list(
              backgroundColor = "white"

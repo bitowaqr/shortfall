@@ -50,7 +50,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
       // send email when contact is clicked
       document.querySelector("#contact").addEventListener("click", () => {
-        window.location = "mailto:p.schneider@sheffield.ac.uk";
+        window.open("mailto:p.schneider@sheffield.ac.uk", '_blank')
+        // window.location = "mailto:p.schneider@sheffield.ac.uk";
       });
       
       
