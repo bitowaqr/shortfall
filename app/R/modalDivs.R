@@ -121,7 +121,7 @@ div(
         <ol>
         <li><b>Age</b>: at what age are patients diagnoses and/or treated?</li>
         <li><b>Sex</b>: What is the proportion of women in the patient patient population?</li>
-        <li><b>Remaining QALYs (discounted)</b>: How many QALYs does a patient without the treatment incur? </li>
+        <li><b>Remaining QALYs (discounted)</b>: How many QALYs does a patient with current standard of care incur? </li>
         <li><b>Discount rate</b>: At what rate should future QALYs be discounted?</li>
         <div style = 'width: 80%; background-color: ##ffffd8; padding: 5px;'>
           <mark><b>NOTE:</b>The discount rate is only used to derive age- and sex-specific QALY norm values.
