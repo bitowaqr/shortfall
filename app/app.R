@@ -88,7 +88,7 @@ ui <- fillPage(
         sliderInput("start_age", NULL, min = 0, max = 99, value = 0, width = "100%"),
         div(
           class = "control-label text-center mb-2  mt-4",
-          "% women in the patient population"
+          "% female in the patient population"
         ),
         sliderInput("sex_mix", NULL, min = 0, max = 100, value = 50, width = "100%"),
         
