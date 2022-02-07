@@ -54,6 +54,11 @@ div(
         ),
         tags$li(
           class ="px-5",
+          "Hernandez Alava, M., Pudney, S., and Wailoo, A. (2020) Estimating the relationship between EQ-5D-5L and EQ-5D-3L: results from an English Population Study. Policy Research Unit in Economic Evaluation of Health and Care Interventions. Universities of Sheffield and York. Report 063", 
+          a(href = "http://nicedsu.org.uk/mapping-eq-5d-5l-to-3l/", "link", "target" = "_blank")
+        ),
+        tags$li(
+          class ="px-5",
           "Fraser Morton and Jagtar Singh Nijjar (2020). eq5d: Methods for Calculating 'EQ-5D'
         Utility Index Scores. R package version 0.7.0.", 
           a(href = "https://CRAN.R-project.org/package=eq5d", "link", "target" = "_blank")

@@ -77,6 +77,23 @@
   # fit lm to estimate weighted means 
   fit_cw = lm(eq_cw ~ as.factor(age) * sex, hse, weights = wt_int)
   
+  # 2. Hernandez-Alva et al. mapping function
+  # load fun_map copula mapping function
+  source("./utils/dsuMapping.R")
+  # recode sex
+  hse$male = hse$sex == "male"
+  # apply algorithm
+  hse$eq_co = fun_map(
+    var_age = "age5_start",
+    var_male = "male", 
+    input = c("mo", "sc", "ua", "pd", "ad"),
+    df = hse, 
+    dsu_lookup = dsu_lookup
+    )
+  
+  # fit lm to estimate weighted means 
+  fit_co = lm(eq_co ~ as.factor(age) * sex, hse, weights = wt_int)
+  
   
 # ONS -------------
   ons_male = read.csv(file = "./data/ons_lt_male_1719.csv")
@@ -95,6 +112,7 @@
   )
   
   ludf$cw = predict(fit_cw, newdata = ludf)
+  ludf$co = predict(fit_co, newdata = ludf)
   
   ludf = merge(ludf, age5map, "age")
   
@@ -140,27 +158,38 @@
   # SAVE MEAN HRQoL ESTIMATES and 95%CI
   # mean hrqol by age and sex
   hse <- data.table(hse)
+  
   mean_cw = hse[,list(cw = weighted.mean(eq_cw,wt_int), n = length(eq_cw)),by=list(sex,age5_str)]
   mean_cw = mean_cw[order(sex, age5_str)]
+  
+  mean_co = hse[,list(cw = weighted.mean(eq_co,wt_int), n = length(eq_co)),by=list(sex,age5_str)]
+  mean_co = mean_co[order(sex, age5_str)]
   
   # bootstrap
   set.seed(1234)
   
-  boot_iter = 10000
+  boot_iter = 100
   sample_rows = replicate(boot_iter, sample(1:nrow(hse), size = nrow(hse), replace = T))
-  boot_res = matrix(data = NA, nrow = nrow(mean_cw), ncol = boot_iter)
+  boot_res_cw = boot_res_co = matrix(data = NA, nrow = nrow(mean_cw), ncol = boot_iter)
   
   for(i in 1:boot_iter){
     cat("\r", i,"      ")
-    sample_cw <- hse[ sample_rows[,i] ]
-    boot_i = sample_cw[,list(cw = weighted.mean(eq_cw,wt_int)),by=list(sex,age5_str)]  
+    sample_i <- hse[ sample_rows[,i] ]
+    boot_i = sample_i[,list(
+      cw = weighted.mean(eq_cw,wt_int),
+      co = weighted.mean(eq_co,wt_int)
+      ),
+      by = list(sex,age5_str)
+      ]  
     boot_i = boot_i[order(sex, age5_str)]
-    boot_res[,i] = boot_i$cw
+    boot_res_cw[,i] = boot_i$cw
+    boot_res_co[,i] = boot_i$co
   }
   
-  boot_ci = t(apply(boot_res, 1, quantile, probs = c(0.275, 0.975)))
+  boot_ci_cw = t(apply(boot_res_cw, 1, quantile, probs = c(0.275, 0.975)))
+  boot_ci_co = t(apply(boot_res_co, 1, quantile, probs = c(0.275, 0.975)))
   
-  cw_ci_df = cbind(mean_cw,boot_ci)
+  cw_ci_df = cbind(mean_cw,boot_ci_cw)
   cw_ci_df$m_ci = paste0(
     formatC(cw_ci_df$cw, digits = 3, format = "f"),
     " (",
@@ -170,8 +199,20 @@
     ")"
   )
   
+  write.csv(cw_ci_df[,c("sex","age5_str","m_ci","n")], "./output/hrqol_cw_ci_df.csv", row.names = F)
   
-  write.csv(cw_ci_df[,c("sex","age5_str","m_ci","n")], "./output/hrqol_ci_df.csv", row.names = F)
+  co_ci_df = cbind(mean_co,boot_ci_co)
+  co_ci_df$m_ci = paste0(
+    formatC(co_ci_df$cw, digits = 3, format = "f"),
+    " (",
+    formatC(co_ci_df$`27.5%`, digits = 3, format = "f"),
+    "; ",
+    formatC(co_ci_df$`97.5%`, digits = 3, format = "f"),
+    ")"
+  )
+  
+  write.csv(co_ci_df[,c("sex","age5_str","m_ci","n")], "./output/hrqol_cw_co_df.csv", row.names = F)
+  
   
   
 # ALTERNATIVE: MVH POPULATION NORMS  

@@ -147,10 +147,11 @@ ui <- fillPage(
           class = "mb-2 mt-4",
         selectizeInput(
           inputId = "utils", 
-          label = NULL, 
+          label = "Select alternative HRQoL norms", 
+          selected = "vanHout",
           choices = list(
-            "Select alternative HRQoL norms" ="",
-            "HSE 2017-2018 + EQ-5D-5L van Hout et al. crosswalk" = "vanHout",
+            "EQ-5D-5L van Hout et al. crosswalk + HSE 2017-2018" = "vanHout",
+            "EQ-5D-5L Hernandez-Alava et al. crosswalk + HSE 2017-2018" = "dsu",
             "MVH 1993 - EQ-5D-3L MVH" = "mvh"
           )
         )
@@ -372,6 +373,11 @@ server <- function(input, output, session){
      if(input$utils == "vanHout" | input$utils== ""){
        util_df = ref_df
        utils = "cw"
+     }
+     
+     if(input$utils == "dsu" ){
+       util_df = ref_df
+       utils = "co"
      }
   
   
