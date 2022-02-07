@@ -48,11 +48,6 @@ ui <- fillPage(
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC",
     crossorigin="anonymous"
   ),
-  if(file.exists("www/google_analytics.html")){
-  tags$head(
-    # google analytics
-    tags$head(includeHTML("www/google_analytics.html")),
-  )},
   # enable shinyjs
   useShinyjs(),
   # load js scripts
