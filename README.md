@@ -50,6 +50,7 @@ All the data sets that were used for the analysis are publicly available:
 2. Interim Scoring for the EQ-5D-5L:
   * Van Hout B, Janssen MF, Feng YS, Kohlmann T, Busschbach J, Golicki D, Lloyd A, Scalone L, Kind P, Pickard AS. Interim scoring for the EQ-5D-5L: mapping the EQ-5D-5L to EQ-5D-3L value sets. Value in health. 2012 Jul 1;15(5):708-15. [link](https://doi.org/10.1016/j.jval.2012.02.008)
   * Fraser Morton and Jagtar Singh Nijjar (2020). eq5d: Methods for Calculating 'EQ-5D' Utility Index Scores. R package version 0.7.0. [link](https://cran.r-project.org/package=eq5d)
+  * Hernandez Alava, M., Pudney, S., and Wailoo, A. (2020) Estimating the relationship between EQ-5D-5L and EQ-5D-3L: results from an English Population Study. Policy Research Unit in Economic Evaluation of Health and Care Interventions. Universities of Sheffield and York. Report 063, [link](http://nicedsu.org.uk/mapping-eq-5d-5l-to-3l/)
 
 3. National Life Tables:
   * ONS: National Life Tables, England, 1980-1982 to 2017-2019. (2021). [link](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesenglandreferencetables)

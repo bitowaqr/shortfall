@@ -1,6 +1,5 @@
 # shortfall app
 
-
 library(shiny)
 library(shinyjs)
 library(shinyWidgets)
