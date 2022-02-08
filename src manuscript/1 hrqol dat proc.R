@@ -211,7 +211,7 @@
     ")"
   )
   
-  write.csv(co_ci_df[,c("sex","age5_str","m_ci","n")], "./output/hrqol_cw_co_df.csv", row.names = F)
+  write.csv(co_ci_df[,c("sex","age5_str","m_ci","n")], "./output/hrqol_co_ci_df.csv", row.names = F)
   
   
   
