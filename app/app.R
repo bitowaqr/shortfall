@@ -248,6 +248,45 @@ ui <- fillPage(
             )
           ),
           
+          # row 5
+          div(
+            class = "res-line mb-2",
+            div(
+              class = "res-left",
+              HTML('QALY weight<sup><small><i class="fa fa-question-circle" role="presentation" aria-label="question-circle icon"></i>
+              </small></sup>:'),
+              span(class="tooltiptext p-4 bg-dark text-light shadow rounded small",tags$table(
+                tags$tr(
+                  tags$th("Multiplier"),
+                  tags$th("% shortfall"),
+                  tags$th("abs. shortfall")
+                ),
+                tags$tr(
+                  tags$td("x 1"),
+                  tags$td("<0.85"),
+                  tags$td("<12")
+                ),
+                tags$tr(
+                  tags$td("x 1.2"),
+                  tags$td("0.85-0.95"),
+                  tags$td("12-18")
+                ),
+                tags$tr(
+                  tags$td("x 1.7"),
+                  tags$td(HTML("&#8805;0.95")),
+                  tags$td(HTML("&#8805;18"))
+                )
+              ))
+            ),
+            div(
+              class = "res-right",
+              div(
+                class = "rbadge bg-primary_col",
+                textOutput("mltplr_txt", inline = T) 
+              )
+            )
+          ),
+          
           # action button
           div(
             class = "d-flex  flex-row justify-content-center flex-wrap w-100 pt-3 mt-3 border-top",
@@ -386,7 +425,17 @@ server <- function(input, output, session){
      dat$shortfall_abs = dat$res$Qx[1] - input$remaining_qalys
   
      dat$shortfall_prop = dat$shortfall_abs / dat$res$Qx[1]
-  
+     
+     
+     dat$q_weight = ifelse(
+       dat$shortfall_prop >= 0.95 | dat$shortfall_abs >= 18,
+       1.7,
+       ifelse(
+         dat$shortfall_prop >= 0.85 | dat$shortfall_abs >= 12,
+         1.2,
+         1
+       )
+     )
    })
   
   
@@ -396,6 +445,8 @@ server <- function(input, output, session){
    output$qales_ill_txt = renderText({fRound(input$remaining_qalys)})
    output$abs_short_txt = renderText({fRound(dat$shortfall_abs,2)})
    output$prop_short_txt = renderText({paste0(fRound(dat$shortfall_prop*100,2),"%")})
+   output$mltplr_txt = renderText({paste0("x ",dat$q_weight)})
+   
   
   
   
@@ -659,17 +710,19 @@ server <- function(input, output, session){
            "QALYs without disease",
            "QALYs with disease",
            "absolute shortfall",
-           "proportional shortfall"
+           "proportional shortfall",
+           "QALY weight"
          ),
-         value = round(c(
+         value = c(
            input$start_age,
            input$sex_mix,
-           input$disc_rate,
-           dat$res$Qx[1],
-           input$remaining_qalys,
-           dat$shortfall_abs,
-           dat$shortfall_prop
-         ),2)
+           round(input$disc_rate,2),
+           round(dat$res$Qx[1],2),
+           round(input$remaining_qalys,2),
+           round(dat$shortfall_abs,2),
+           round(dat$shortfall_prop,3),
+           dat$q_weight
+         )
        )
   
        write.csv(download_data, file, row.names = F)
