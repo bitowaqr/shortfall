@@ -253,30 +253,36 @@ ui <- fillPage(
             class = "res-line mb-2",
             div(
               class = "res-left",
-              HTML('QALY weight<sup><small><i class="fa fa-question-circle" role="presentation" aria-label="question-circle icon"></i>
-              </small></sup>:'),
-              span(class="tooltiptext p-4 bg-dark text-light shadow rounded small",tags$table(
-                tags$tr(
-                  tags$th("Multiplier"),
-                  tags$th("% shortfall"),
-                  tags$th("abs. shortfall")
-                ),
-                tags$tr(
-                  tags$td("x 1"),
-                  tags$td("<0.85"),
-                  tags$td("<12")
-                ),
-                tags$tr(
-                  tags$td("x 1.2"),
-                  tags$td("0.85-0.95"),
-                  tags$td("12-18")
-                ),
-                tags$tr(
-                  tags$td("x 1.7"),
-                  tags$td(HTML("&#8805;0.95")),
-                  tags$td(HTML("&#8805;18"))
-                )
-              ))
+              HTML('<span class ="qaly-weight-info">
+              QALY weight
+                <span class="tooltiptext p-4 bg-dark text-light shadow rounded small">
+                  <table>
+                    <tr>
+                      <th>Multiplier</th>
+                      <th>% shortfall</th>
+                      <th>abs. shortfall</th>
+                    </tr>
+                    <tr>
+                      <td>x 1</td>
+                      <td>&lt;0.85</td>
+                      <td>&lt;12</td>
+                    </tr>
+                    <tr>
+                      <td>x 1.2</td>
+                      <td>0.85-0.95</td>
+                      <td>12-18</td>
+                    </tr>
+                    <tr>
+                      <td>x 1.7</td>
+                      <td>&#8805;0.95</td>
+                      <td>&#8805;18</td>
+                    </tr>
+                  </table>
+              </span>
+            
+            <sup><small><i class="fa fa-question-circle" role="presentation" aria-label="question-circle icon"></i>
+            </small></sup>:</span>'
+                   )
             ),
             div(
               class = "res-right",
