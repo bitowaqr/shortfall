@@ -213,3 +213,8 @@ body {
 .tooltiptext td {
   border: white solid 1px;
 }
+
+.selectize-dropdown {
+bottom: 100% !important; 
+top:auto!important;
+}
