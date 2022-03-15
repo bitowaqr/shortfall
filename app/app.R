@@ -80,6 +80,7 @@ ui <- fillPage(
       div(
         class = "d-flex flex-column justify-content-center input-bar",
         
+        
         # pat cohort age
         div(
           class = "control-label text-center mb-2  ",
@@ -91,6 +92,23 @@ ui <- fillPage(
           "% female in the patient population"
         ),
         sliderInput("sex_mix", NULL, min = 0, max = 100, value = 50, width = "100%"),
+        
+        
+        # pop norm
+        div(
+          class = "control-label text-center mb-2  mt-4",
+          "Select alternative HRQoL norms"
+        ),
+        selectizeInput(
+          inputId = "utils", 
+          label = NULL, 
+          selected = "dsu",
+          choices = list(
+            "Reference case: Hernandez Alava et al., EQ-5D-5L to 3L mapping + HSE 2017-2018" = "dsu",
+            "Alternative A: van Hout et al., EQ-5D-5L to 3L mapping + HSE 2017-2018" = "vanHout",
+            "Alternative B: MVH, EQ-5D-3L value set + health state profiles" = "mvh"
+          )
+        ),
         
         # Remaining QALYs
         div(
@@ -135,22 +153,8 @@ ui <- fillPage(
         div(
           class = "mt-2 ms-5",
           checkboxInput("no_discount", "no discounting", value = F)
-        ),
+        )
         
-        # pop norm
-        div(
-          class = "mb-2 mt-4",
-        selectizeInput(
-          inputId = "utils", 
-          label = "Select alternative HRQoL norms", 
-          selected = "dsu",
-          choices = list(
-            "Reference case: Hernandez-Alava et al. EQ-5D-5L to 3L mapping + HSE 2017-2018" = "dsu",
-            "Alternative A: van Hout et al. EQ-5D-5L to 3L mapping + HSE 2017-2018" = "vanHout",
-            "Alternative B: MVH 1993 EQ-5D-3L value set + health state profiles" = "mvh"
-          )
-        )
-        )
       ),
       
         # credits
