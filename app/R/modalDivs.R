@@ -23,56 +23,63 @@ div(
         class = "py-3 px-5",
         style = "overflow-y:scroll;",
         HTML("
-        <b>QALE estimates are based on data from three sources:</b>
+        <b>Estimating QALEs requires three inputs:</b>
         <ol>
-            <li> EQ-5D-5L health state profiles, retrieved from the Health Survey for England (waves 2017 and 2018)</li>
-            <li> The crosswalk scoring algorithm, developed by van Hout et al. (2012), which maps EQ-5D-5L health states to the UK EQ-5D-3L social value set</li> 
-            <li> National Life Tables for England 2017-2019, provided by the Office of National Statistics</li>
+            <li> EQ-5D health state profiles</li>
+            <li> A scoring algorithm to value health states in terms of health-realted quality of life </li> 
+            <li> A national life table to derive age and sex-specific survial times</li>
         </ol>"
              ),
-        div(style = "font-size: 90%",
-            br(),
+        tags$p(
+               span(class = "fw-bold", "The following combination of data sources are taken to be the reference case:"),
+               tags$li(tags$b("Health state profiles:"), "Health Survey for England 2017 and 2018 (pooled)"),
+               tags$li(tags$b("Scoring algorithm:"), "Hernandez Alava, et al.'s EQ-5D-5L to 3L mapping algorithm"),
+               tags$li(tags$b("Life tables:"), "England, 2017-2019 (pooled)")
+               ),
+        tags$p(
+          tags$b("In addition, we provide estimates for two alternative specifications:"),
+          tags$li("A. Using the  van Hout et al. EQ-5D-5L to 3L mapping algorithm"),
+          tags$li("B. Using the EQ-5D-3L health state profiles and value set from the 1993 MVH study")
+          ),
+        h4("Sources:"),
         div(
-          tags$b("1. Health Survey for England:"),
           tags$li(
-            class ="px-5",
+            class ="px-5 my-1",
             "University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2017. UK Data Service (2021).",
             a(href = "http://doi.org/10.5255/UKDA-SN-8488-2", "link", "target" = "_blank")
           ),
           tags$li(
-            class ="px-5","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2018. UK Data Service (2021).",
+            class ="px-5 my-1","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2018. UK Data Service (2021).",
             a(href = "http://doi.org/10.5255/UKDA-SN-8649-1", "link", "target" = "_blank")
-          )
-        ),
-        br(),
-      div(
-        tags$b("2. Interim Scoring for the EQ-5D-5L:"),
+          ),
         tags$li(
-          class ="px-5",
-          "Van Hout B, Janssen MF, Feng YS, Kohlmann T, Busschbach J, Golicki D, Lloyd A, Scalone L, Kind P, Pickard AS. Interim scoring for the EQ-5D-5L: mapping the EQ-5D-5L to EQ-5D-3L value sets. Value in health. 2012 Jul 1;15(5):708-15.", 
-          a(href = "https://doi.org/10.1016/j.jval.2012.02.008", "link", "target" = "_blank")
-        ),
-        tags$li(
-          class ="px-5",
+          class ="px-5 my-1",
           "Hernandez Alava, M., Pudney, S., and Wailoo, A. (2020) Estimating the relationship between EQ-5D-5L and EQ-5D-3L: results from an English Population Study. Policy Research Unit in Economic Evaluation of Health and Care Interventions. Universities of Sheffield and York. Report 063", 
           a(href = "http://nicedsu.org.uk/mapping-eq-5d-5l-to-3l/", "link", "target" = "_blank")
         ),
         tags$li(
-          class ="px-5",
+          class ="px-5 my-1",
+          "Van Hout B, Janssen MF, Feng YS, Kohlmann T, Busschbach J, Golicki D, Lloyd A, Scalone L, Kind P, Pickard AS. Interim scoring for the EQ-5D-5L: mapping the EQ-5D-5L to EQ-5D-3L value sets. Value in health. 2012 Jul 1;15(5):708-15.", 
+          a(href = "https://doi.org/10.1016/j.jval.2012.02.008", "link", "target" = "_blank")
+        ),
+        tags$li(
+          class ="px-5 my-1",
           "Fraser Morton and Jagtar Singh Nijjar (2020). eq5d: Methods for Calculating 'EQ-5D'
         Utility Index Scores. R package version 0.7.0.", 
           a(href = "https://CRAN.R-project.org/package=eq5d", "link", "target" = "_blank")
-        )
-      ),
-        br(),
-        div(
-          style = "margin-bottom: 20px;",
-          tags$b("3. National Life Tables:"),
+        ),
         tags$li(
-          class ="px-5",
+          class ="px-5 my-1",
+        "MVH Group (1995). The measurement and valuation of health: Final report on the modelling of valuation tariffs. Centre for Health Economics, University of York." ,
+        a(href = "https://www.york.ac.uk/media/che/ documents/reports/MVHFinalReport.pdf", "link", "target" = "_blank"
+          )
+        ),
+        tags$li(
+          class ="px-5 my-1",
           "ONS: National Life Tables, England, 1980-1982 to 2017-2019. (2021).", 
           a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesenglandreferencetables", "link", "target" = "_blank")
-        ))
+        )
+        
       ),
       
       

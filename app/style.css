@@ -136,7 +136,7 @@ body {
 }
 
 .waiter-overlay {
-  background-color: var(--primary_col);
+  background-color: #011428;
 }
 
 .landing {
@@ -212,4 +212,10 @@ body {
 
 .tooltiptext td {
   border: white solid 1px;
+}
+
+
+
+#utils-selectized {
+display: none !important  ;
 }

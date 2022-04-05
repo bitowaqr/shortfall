@@ -8,7 +8,7 @@ library(dplyr)
 library(waiter)
 
 # load ref df with English life table (ONS) and HRQoL estimates (HSE and MVH) by age and sex 
-ref_df = read.csv("./data/ref_df.csv")
+ref_df = read.csv("./data/ref_df_appended.csv")
 mvh_df = read.csv("./data/mvh_df.csv")
 
 # load function to compute life and quality-adjusted life expectancies
@@ -40,6 +40,7 @@ ui <- fillPage(
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM",
     crossorigin="anonymous"
   ),
+  if(file.exists("www/google_analytics.html")){tags$head(tags$head(includeHTML("www/google_analytics.html")))},
   tags$title("QALY Shortfall Calculator"),
   tags$link(
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css",
@@ -79,6 +80,7 @@ ui <- fillPage(
       div(
         class = "d-flex flex-column justify-content-center input-bar",
         
+        
         # pat cohort age
         div(
           class = "control-label text-center mb-2  ",
@@ -90,6 +92,24 @@ ui <- fillPage(
           "% female in the patient population"
         ),
         sliderInput("sex_mix", NULL, min = 0, max = 100, value = 50, width = "100%"),
+        
+        
+        # pop norm
+        div(
+          class = "control-label text-center mb-2  mt-4",
+          "Select alternative HRQoL norms"
+        ),
+        selectizeInput(
+          inputId = "utils", 
+          label = NULL, 
+          selected = "dsu",
+          choices = list(
+            "Reference case: Hernandez Alava et al., EQ-5D-5L to 3L mapping + HSE 2017-2018" = "dsu",
+            "Alternative A: van Hout et al., EQ-5D-5L to 3L mapping + HSE 2017-2018" = "vanHout",
+            "Alternative B: MVH, EQ-5D-3L value set + health state profiles" = "mvh",
+            "Alternative C: MVH, EQ-5D-3L value set + HSE 2012+14" = "tto"
+          )
+        ),
         
         # Remaining QALYs
         div(
@@ -134,22 +154,8 @@ ui <- fillPage(
         div(
           class = "mt-2 ms-5",
           checkboxInput("no_discount", "no discounting", value = F)
-        ),
+        )
         
-        # pop norm
-        div(
-          class = "mb-2 mt-4",
-        selectizeInput(
-          inputId = "utils", 
-          label = "Select alternative HRQoL norms", 
-          selected = "vanHout",
-          choices = list(
-            "EQ-5D-5L van Hout et al. crosswalk + HSE 2017-2018" = "vanHout",
-            "EQ-5D-5L Hernandez-Alava et al. crosswalk + HSE 2017-2018" = "dsu",
-            "MVH 1993 - EQ-5D-3L MVH" = "mvh"
-          )
-        )
-        )
       ),
       
         # credits
@@ -412,6 +418,11 @@ server <- function(input, output, session){
      if(input$utils == "vanHout" | input$utils== ""){
        util_df = ref_df
        utils = "cw"
+     }
+     
+     if(input$utils == "tto" | input$utils== ""){
+       util_df = ref_df
+       utils = "tto"
      }
      
      if(input$utils == "dsu" ){
