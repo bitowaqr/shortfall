@@ -39,18 +39,27 @@ div(
         tags$p(
           tags$b("In addition, we provide estimates for two alternative specifications:"),
           tags$li("A. Using the  van Hout et al. EQ-5D-5L to 3L mapping algorithm"),
-          tags$li("B. Using the EQ-5D-3L health state profiles and value set from the 1993 MVH study")
+          tags$li("B. Using the EQ-5D-3L health state profiles and value set from the 1993 MVH study"),
+          tags$li("C. Using the EQ-5D-3L health state profiles from the Health Survey for England 2012 and 2014, and the 3L value set from the 1993 MVH study")
           ),
         h4("Sources:"),
         div(
+          tags$li(
+            class ="px-5 my-1","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2018. UK Data Service (2021).",
+            a(href = "http://doi.org/10.5255/UKDA-SN-8649-1", "link", "target" = "_blank")
+          ),
           tags$li(
             class ="px-5 my-1",
             "University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2017. UK Data Service (2021).",
             a(href = "http://doi.org/10.5255/UKDA-SN-8488-2", "link", "target" = "_blank")
           ),
           tags$li(
-            class ="px-5 my-1","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2018. UK Data Service (2021).",
-            a(href = "http://doi.org/10.5255/UKDA-SN-8649-1", "link", "target" = "_blank")
+            class ="px-5 my-1","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2014. UK Data Service (2018).",
+            a(href = "http://doi.org/10.5255/UKDA-SN-7919-3", "link", "target" = "_blank")
+          ),
+          tags$li(
+            class ="px-5 my-1","University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2012. UK Data Service (2014).",
+            a(href = "http://doi.org/10.5255/UKDA-SN-7480-1", "link", "target" = "_blank")
           ),
         tags$li(
           class ="px-5 my-1",
