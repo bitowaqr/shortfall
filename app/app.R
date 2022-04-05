@@ -8,7 +8,7 @@ library(dplyr)
 library(waiter)
 
 # load ref df with English life table (ONS) and HRQoL estimates (HSE and MVH) by age and sex 
-ref_df = read.csv("./data/ref_df.csv")
+ref_df = read.csv("./data/ref_df_appended.csv")
 mvh_df = read.csv("./data/mvh_df.csv")
 
 # load function to compute life and quality-adjusted life expectancies
@@ -106,7 +106,8 @@ ui <- fillPage(
           choices = list(
             "Reference case: Hernandez Alava et al., EQ-5D-5L to 3L mapping + HSE 2017-2018" = "dsu",
             "Alternative A: van Hout et al., EQ-5D-5L to 3L mapping + HSE 2017-2018" = "vanHout",
-            "Alternative B: MVH, EQ-5D-3L value set + health state profiles" = "mvh"
+            "Alternative B: MVH, EQ-5D-3L value set + health state profiles" = "mvh",
+            "Alternative C: MVH, EQ-5D-3L value set + HSE 2012+14" = "tto"
           )
         ),
         
@@ -417,6 +418,11 @@ server <- function(input, output, session){
      if(input$utils == "vanHout" | input$utils== ""){
        util_df = ref_df
        utils = "cw"
+     }
+     
+     if(input$utils == "tto" | input$utils== ""){
+       util_df = ref_df
+       utils = "tto"
      }
      
      if(input$utils == "dsu" ){
