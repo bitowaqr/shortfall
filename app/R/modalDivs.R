@@ -80,7 +80,7 @@ div(
         tags$li(
           class ="px-5 my-1",
         "MVH Group (1995). The measurement and valuation of health: Final report on the modelling of valuation tariffs. Centre for Health Economics, University of York." ,
-        a(href = "https://www.york.ac.uk/media/che/ documents/reports/MVHFinalReport.pdf", "link", "target" = "_blank"
+        a(href = "https://www.york.ac.uk/media/che/documents/reports/MVH%20Final%20Report.pdf", "link", "target" = "_blank"
           )
         ),
         tags$li(
