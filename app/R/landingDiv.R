@@ -11,7 +11,7 @@ landingDiv = function(){
                     <div class="intro-text fs-2 intro-subtitle mx-auto my-5">
                         Paul Schneider, Simon McNamara, James Love-Koh, Tim Doran, Nils Gutacker
                     </div>
-                    <div class = "logos d-flex flex-row justify-content-center flex-wrap mx-auto px-5">
+                    <div class = "logos d-flex flex-row justify-content-center align-items-center flex-wrap mx-auto px-5">
                         <div class="cell">
                             <img  class ="image" src="sheffield_logo.png">
                         </div>
@@ -19,7 +19,7 @@ landingDiv = function(){
                             <img class ="image" src="york_logo.png">
                         </div>
                         <div class="cell">
-                            <img class ="image" src="bresmed_logo_copy.png">
+                            <img class ="image" src="lumanity_logo.png">
                         </div>
                     </div>
                     <div class="progress">
