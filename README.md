@@ -1,14 +1,8 @@
-This repository contains the R source code for the preprint publication:
+This repository contains the R source code for the publication:
 
-### **"Quality-adjusted life expectancy norms for the English population"**
+### McNamara S, Schneider PP, Love-Koh J, Doran T, Gutacker N. **Quality-Adjusted Life Expectancy Norms for the English Population**. Value in Health. 2022 Aug 12. [https://doi.org/10.1016/j.jval.2022.07.005](https://doi.org/10.1016/j.jval.2022.07.005)
 
-Paul Schneider<sup>1</sup>, Simon McNamara<sup>1,2</sup>,James Love-Koh<sup>3,4</sup>, Tim Doran<sup>5</sup>, Nils Gutacker<sup>3</sup>
-
-<sup>1</sup> ScHARR, University of Sheffield, Sheffield, UK; <sup>2</sup> BresMed, Sheffield, UK; <sup>3</sup> CHE, University of York, York, UK; <sup>4</sup> NICE, London, UK; <sup>5</sup> Department of Health Sciences, University of York, York, UK.
-
-**Preprint on medRxiv: [Link](https://www.medrxiv.org/content/10.1101/2021.12.13.21267671v1)**
-
-**Shortfall shiny app: [Link](https://r4scharr.shinyapps.io/shortfall/)**
+**Link to the: [QALY Shortfall calculator web tool](https://shiny.york.ac.uk/shortfall)**
 
 *****
 
@@ -16,7 +10,7 @@ Paul Schneider<sup>1</sup>, Simon McNamara<sup>1,2</sup>,James Love-Koh<sup>3,4<
 
 ```
 ./app/               # source code for the shiny app
-./src manuscript/     # analysis for the results reported in the manuscript
+./src manuscript/    # analysis for the results reported in the manuscript
 ```
 
 *****
