@@ -57,6 +57,10 @@ ui <- fillPage(
   # show loading screen
   use_waiter(),
   waiter_show_on_load(color = "", html = landingDiv()),
+  div(
+    style = "position:absolute; left:-9999px;",
+    actionLink("showNotify","")
+  ),
   
   
   div(
@@ -97,17 +101,22 @@ ui <- fillPage(
         # pop norm
         div(
           class = "control-label text-center mb-2  mt-4",
-          "Select alternative HRQoL norms"
-        ),
+          style = "line-height:1",
+          "Select scenario", 
+          tags$br(),tags$small("(see",
+          actionLink("sources-2", "sources", "data-bs-toggle"="modal", "data-bs-target"="#sourcesModal"),
+          "for details"
+        )),
         selectizeInput(
           inputId = "utils", 
           label = NULL, 
-          selected = "dsu",
+          selected = "dsu_2014",
           choices = list(
-            "Reference case: Hernandez Alava et al., EQ-5D-5L to 3L mapping + HSE 2017-2018" = "dsu",
-            "Alternative A: van Hout et al., EQ-5D-5L to 3L mapping + HSE 2017-2018" = "vanHout",
-            "Alternative B: MVH, EQ-5D-3L value set + health state profiles" = "mvh",
-            "Alternative C: MVH, EQ-5D-3L value set + HSE 2012+14" = "tto"
+            "Reference case: MVH value set + HSE 2014 ALDVMM model (Hernandez Alava et al)" = "dsu_2014",
+            "Alternative A: 5L to 3L mapping (Hernandez Alava et al) + HSE 2017-2018" = "dsu",
+            "Alternative B: 5L to 3L mapping (van Hout et al) + HSE 2017-2018" = "vanHout",
+            "Alternative C: MVH value set + health state profiles" = "mvh",
+            "Alternative D: MVH value set + HSE 2012+14" = "tto"
           )
         ),
         
@@ -166,7 +175,7 @@ ui <- fillPage(
              href="#" 
              data-bs-toggle="tooltip" 
              title="" 
-             data-bs-original-title="Paul Schneider, Simon McNamara, James Love-Koh, Tim Doran, Nils Gutacker. QALY Shortfall Calculator. 2021. https://r4scharr.shinyapps.io/shortfall/"
+             data-bs-original-title="Paul Schneider, Simon McNamara, James Love-Koh, Tim Doran, Nils Gutacker. QALY Shortfall Calculator. 2021. https://shiny.york.ac.uk/shortfall"
              >
              &copy; Schneider et al. 2021
              </a>')
@@ -352,6 +361,24 @@ ui <- fillPage(
 
 server <- function(input, output, session){
   
+  # notify users of the last update
+  observeEvent(input$showNotify,ignoreInit = F,ignoreNULL = T, {
+    showNotification(
+      HTML("
+           <div>
+            <span class=\"fw-bold\">Update! </span>
+            <span class=\"fw-light\">28 January 2023</span>
+           </div>
+           <div>
+            New reference case!
+           </div>"
+           ),
+      duration = 10, 
+      type = "warning"
+      )
+  })
+  
+  
    # add_1 and take_1 buttton logics -----
    observeEvent(input$add_1,{
      updateAutonumericInput(session, "remaining_qalys", value = input$remaining_qalys+1)
@@ -428,6 +455,11 @@ server <- function(input, output, session){
      if(input$utils == "dsu" ){
        util_df = ref_df
        utils = "co"
+     }
+     
+     if(input$utils == "dsu_2014" ){
+       util_df = ref_df
+       utils = "dsu_2014"
      }
   
   

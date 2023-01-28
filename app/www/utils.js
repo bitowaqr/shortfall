@@ -34,6 +34,16 @@ document.addEventListener('DOMContentLoaded', (event) => {
         if (progress >= 100){
             removeFadeOut(overlay[0], 1000, true)
             clearInterval(interval)
+            
+            // show 2023-01-28 update notification (until May)
+            setTimeout(()=> {
+              var today = new Date();
+              var date = new Date("2023-04-01");
+              if (today < date && document.querySelector("#showNotify")){
+                document.querySelector("#showNotify").click()
+              }
+            },750)
+            
         }
         
     }, 100);

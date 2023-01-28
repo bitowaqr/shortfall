@@ -219,3 +219,19 @@ body {
 #utils-selectized {
 display: none !important  ;
 }
+
+#remaining_qalys, #disc_rate {
+  text-align: center  !important;
+}
+
+
+.hanging-indent div {
+  padding-left: 1.5em;
+  text-indent:-1.5em;
+  
+}
+
+#shiny-notification-panel {
+  bottom: 36px;
+  right: 42px;
+}
