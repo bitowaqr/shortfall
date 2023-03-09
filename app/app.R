@@ -376,6 +376,19 @@ server <- function(input, output, session){
       duration = 10, 
       type = "warning"
       )
+    showNotification(
+      HTML("
+           <div>
+            <span class=\"fw-bold\"></span>
+            <span class=\"fw-light\">30 January 2023</span>
+           </div>
+           <div>
+            We resolved a minor bug in the code concerning the combination of male and female life expectancy.
+           </div>"
+      ),
+      duration = 10, 
+      type = "warning"
+    )
   })
   
   
