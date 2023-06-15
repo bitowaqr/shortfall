@@ -7,6 +7,17 @@ compQale = function(
   disc_rate = 0.035,
   utils = "cw"
   ){
+  
+  
+  if(prop_female > 0 & prop_female < 1){
+    stop("prop_female has invalid value, must be 0 or 1.\n
+    This function can only be used for male OR female populations.
+         If you want to calculate QALEs for mixed populations: 
+         1) You can combine the estimates manually (p*f_qale + (1-p)*m_qale), or
+         2) Use the compQale function in the ./app/utils folder.")
+  }
+  
+  
   ons_df = ons_df[ons_df$age >= start_age,]
   ons_df = ons_df[order(ons_df$age),]
   df_female = ons_df[ons_df$sex == "female",c("age",utils,"lx","dx","mx","ex")]
