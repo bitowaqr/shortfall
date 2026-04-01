@@ -1,55 +1,30 @@
-This repository contains the R source code for the publication:
+# QALY Shortfall Calculator (v1 — Legacy)
 
-### McNamara S, Schneider PP, Love-Koh J, Doran T, Gutacker N. **Quality-Adjusted Life Expectancy Norms for the English Population**. Value in Health. 2022 Aug 12. [https://doi.org/10.1016/j.jval.2022.07.005](https://doi.org/10.1016/j.jval.2022.07.005)
+> **This version is no longer actively maintained.** The Shiny app now redirects to the [QALY Shortfall Calculator v2](https://shortfallv2.vercel.app/), built in JavaScript/Nuxt. Source code for v2: [github.com/bitowaqr/shortfall_v2](https://github.com/bitowaqr/shortfall_v2)
 
-**Link to the: [QALY Shortfall calculator web tool](https://shiny.york.ac.uk/shortfall)**
+---
 
-*****
+This repository contains the original R/Shiny source code and manuscript analysis for:
 
-#### Folder structure:
+> McNamara S, Schneider PP, Love-Koh J, Doran T, Gutacker N. **Quality-Adjusted Life Expectancy Norms for the English Population**. Value in Health. 2022 Aug 12. [https://doi.org/10.1016/j.jval.2022.07.005](https://doi.org/10.1016/j.jval.2022.07.005)
+
+### Repository structure
 
 ```
-./app/               # source code for the shiny app
-./src manuscript/    # analysis for the results reported in the manuscript
+./app/               # Shiny app (now serves an iframe redirect to v2)
+./src manuscript/    # Analysis for the results reported in the manuscript
 ```
 
-*****
+### Data availability
 
-#### Abstract
+All data sets used in the analysis are publicly available:
 
-##### **Objective**
+- **Health Survey for England, 2017.** [link](http://doi.org/10.5255/UKDA-SN-8488-2)
+- **Health Survey for England, 2018.** [link](http://doi.org/10.5255/UKDA-SN-8649-1)
+- **EQ-5D-5L Interim Scoring.** Van Hout et al. (2012). [link](https://doi.org/10.1016/j.jval.2012.02.008)
+- **EQ-5D-5L to 3L Mapping.** Hernandez Alava et al. (2020). [link](http://nicedsu.org.uk/mapping-eq-5d-5l-to-3l/)
+- **National Life Tables, England.** ONS (2021). [link](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesenglandreferencetables)
 
-The National Institute for Health and Care Excellence in England has proposed severity-of-disease modifiers that give greater weight to health benefits accruing to patients who experience a larger shortfall in quality-adjusted life years (QALYs) under current standard of care compared to healthy individuals. This requires an estimate of quality-adjusted life expectancy (QALE) of the general population by age and sex. Previous QALE population norms are based on nearly 30-year old assessments of HRQoL in the general population. This study provides updated QALE estimates for the English population by age and sex.
+### Contact
 
-##### **Methods**
-EQ-5D-5L data for 14,412 participants from the Health Survey for England (waves 2017 and 2018) were pooled and HRQoL population norms were calculated. These norms were combined with official life tables from the Office for National Statistics for 2017-2019 using the Sullivan method to derive QALE estimates by age and sex. Values were discounted using 0%, 1.5% and 3.5% discount rates.
-
-##### **Results**
-QALE at birth is 68.04 QALYs for men and 68.48 QALYs for women. These values are lower than previously published QALE population norms based on older HRQoL data. 
-
-##### **Conclusions**
-This study provides new QALE population norms for England that serve to establish absolute and relative QALY shortfalls for the purpose of health technology assessments.
-
-
-****
-
-##### **Data availability** 
-
-All the data sets that were used for the analysis are publicly available:
-
-1. Health Survey for England:
-  * University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2017. UK Data Service (2021). [link](http://doi.org/10.5255/UKDA-SN-8488-2)
-  * University College London Department of Epidemiology and Public Health; National Centre for Social Research (NatCen). Health Survey for England, 2018. UK Data Service (2021). [link](http://doi.org/10.5255/UKDA-SN-8649-1)
-
-2. Interim Scoring for the EQ-5D-5L:
-  * Van Hout B, Janssen MF, Feng YS, Kohlmann T, Busschbach J, Golicki D, Lloyd A, Scalone L, Kind P, Pickard AS. Interim scoring for the EQ-5D-5L: mapping the EQ-5D-5L to EQ-5D-3L value sets. Value in health. 2012 Jul 1;15(5):708-15. [link](https://doi.org/10.1016/j.jval.2012.02.008)
-  * Fraser Morton and Jagtar Singh Nijjar (2020). eq5d: Methods for Calculating 'EQ-5D' Utility Index Scores. R package version 0.7.0. [link](https://cran.r-project.org/package=eq5d)
-  * Hernandez Alava, M., Pudney, S., and Wailoo, A. (2020) Estimating the relationship between EQ-5D-5L and EQ-5D-3L: results from an English Population Study. Policy Research Unit in Economic Evaluation of Health and Care Interventions. Universities of Sheffield and York. Report 063, [link](http://nicedsu.org.uk/mapping-eq-5d-5l-to-3l/)
-
-3. National Life Tables:
-  * ONS: National Life Tables, England, 1980-1982 to 2017-2019. (2021). [link](https://www.ons.gov.uk/peoplepopulationandcommunity/birthsdeathsandmarriages/lifeexpectancies/datasets/nationallifetablesenglandreferencetables)
-
-****
-
-If you have comments, questions, or concerns, please [contact Us](mailto:p.schneider@sheffield.ac.uk)
-
+If you have comments, questions, or concerns, please [contact us](mailto:p.schneider@sheffield.ac.uk).
