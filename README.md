@@ -27,4 +27,4 @@ All data sets used in the analysis are publicly available:
 
 ### Contact
 
-If you have comments, questions, or concerns, please [contact us](mailto:p.schneider@sheffield.ac.uk).
+If you have comments, questions, or concerns, please [contact us](mailto:bitowaqr@gmail.com).
